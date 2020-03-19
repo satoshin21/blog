@@ -15,6 +15,7 @@ var _loader = require("./loader");
 
 var _apiRunnerBrowser = require("./api-runner-browser");
 
+// Renders page
 class PageRenderer extends _react.default.Component {
   render() {
     const props = Object.assign({}, this.props, {
