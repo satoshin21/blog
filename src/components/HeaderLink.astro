@@ -1,12 +1,27 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 
-type Props = HTMLAttributes<'a'>;
+type Props = HTMLAttributes<'a'> & {
+	/** Blog リンク用: トップ (/) と /blog/ 配下の記事で active にする */
+	isBlogSection?: boolean;
+};
 
-const { href, class: className, ...props } = Astro.props;
-const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
-const subpath = pathname.match(/[^\/]+/g);
-const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
+const { href, class: className, isBlogSection = false, ...props } = Astro.props;
+const baseUrl = (import.meta.env.BASE_URL ?? '').replace(/\/$/, '');
+const pathname = Astro.url.pathname.replace(baseUrl, '').replace(/\/+$/, '') || '/';
+const pathnameNorm = pathname === '' ? '/' : pathname;
+const subpath = pathnameNorm.match(/[^/]+/g);
+
+let isActive = href === pathnameNorm || href === '/' + (subpath?.[0] ?? '');
+if (isBlogSection && href === '/') {
+	// トップ (/) または /blog 配下 (記事ページ) のとき active。BASE_URL で先頭が消えても一致するよう両方チェック
+	const isBlogPath =
+		pathnameNorm === '/' ||
+		pathnameNorm.startsWith('/blog') ||
+		pathnameNorm === 'blog' ||
+		pathnameNorm.startsWith('blog/');
+	isActive = isBlogPath;
+}
 ---
 
 <a href={href} class:list={[className, { active: isActive }]} {...props}>
