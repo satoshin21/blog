@@ -1,0 +1,46 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const homeUrl = (import.meta.env.BASE_URL ?? '').replace(/\/$/, '') || '/';
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead title={`404 - ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="not-found">
+				<h1>404</h1>
+				<p>ページが見つかりませんでした。</p>
+				<p>
+					<a href={homeUrl}>トップへ戻る</a>
+				</p>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.not-found {
+		text-align: center;
+		padding: 4em 0;
+	}
+	.not-found h1 {
+		font-size: 4rem;
+		color: rgb(var(--gray-light));
+		margin-bottom: 0.5em;
+	}
+	.not-found p {
+		margin-bottom: 1em;
+	}
+	.not-found a {
+		font-weight: 600;
+	}
+</style>

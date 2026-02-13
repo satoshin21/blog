@@ -16,6 +16,9 @@
 		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%), 0 16px 32px
 		rgba(var(--gray), 33%);
 }
+html {
+	scrollbar-gutter: stable;
+}
 body {
 	font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 	margin: 0;
@@ -75,6 +78,12 @@ p {
 }
 .prose p {
 	margin-bottom: 2em;
+}
+.prose a {
+	color: black;
+}
+.prose a:hover {
+	color: black;
 }
 textarea {
 	width: 100%;

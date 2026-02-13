@@ -1,11 +1,14 @@
 ---
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
+
+// ブログ一覧（トップ）へのURL（base 対応）
+const blogListUrl = (import.meta.env.BASE_URL ?? '').replace(/\/$/, '') || '/';
 ---
 
 <header>
 	<nav>
-		<a href="/" class="site-name">{SITE_TITLE}</a>
+		<a href={blogListUrl} class="site-name">{SITE_TITLE}</a>
 		<ol class="nav-links">
 			<li><HeaderLink href="/" isBlogSection>Articles</HeaderLink></li>
 			<li><HeaderLink href="/about">About</HeaderLink></li>
