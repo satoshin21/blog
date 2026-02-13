@@ -1,15 +1,50 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
+import { marked } from 'marked';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+// Use custom renderer: links display as plain text (e.g. [@user](url) -> @user)
+const renderer = new marked.Renderer();
+renderer.link = function ({ tokens }) {
+	return this.parser.parseInline(tokens, this.parser.textRenderer);
+};
+marked.setOptions({ gfm: true, renderer });
+
+const posts = (await getCollection('blog'))
+	.filter((post) => post.data.published === true)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+function getFirstTwoLines(body: string | undefined): string {
+	if (!body) return '';
+	const lines = body
+		.split('\n')
+		.map((line) => line.replace(/^#+\s*/, '').trim())
+		.filter((line) => line);
+	return lines.slice(0, 2).join(' ');
+}
+
+const postsWithDescription = posts.map((post) => {
+	const rawDescription = getFirstTwoLines(post.body);
+	return {
+		...post,
+		descriptionHtml: rawDescription ? marked.parseInline(rawDescription) : '',
+	};
+});
+
+// Group posts by year (newest first)
+const postsByYear = new Map<number, typeof postsWithDescription>();
+for (const post of postsWithDescription) {
+	const year = post.data.pubDate.getFullYear();
+	if (!postsByYear.has(year)) {
+		postsByYear.set(year, []);
+	}
+	postsByYear.get(year)!.push(post);
+}
+const years = [...postsByYear.keys()].sort((a, b) => b - a);
 ---
 
 <!doctype html>
@@ -18,71 +53,59 @@ const posts = (await getCollection('blog')).sort(
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
 			main {
-				width: 960px;
+				width: 720px;
+				max-width: calc(100% - 4em);
 			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
+			.year {
+				font-size: 4rem;
+				font-weight: 700;
+				color: rgb(var(--gray-light));
+				margin: 2em 0 0.5em 0;
+				line-height: 1;
+			}
+			.year:first-child {
+				margin-top: 0;
+			}
+			.articles-list {
+				list-style: none;
 				margin: 0;
 				padding: 0;
 			}
-			ul li {
-				width: calc(50% - 1rem);
+			.articles-list li {
+				margin-bottom: 2em;
 			}
-			ul li * {
+			.articles-list li:last-child {
+				margin-bottom: 0;
+			}
+			.articles-list a {
 				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
 				color: rgb(var(--black));
-				line-height: 1;
+				display: block;
+				transition: color 0.2s ease;
 			}
-			.date {
-				margin: 0;
+			.articles-list a:hover {
 				color: rgb(var(--gray));
 			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
+			.article-title {
+				font-size: 1.25em;
+				font-weight: 700;
+				margin: 0 0 0.25em 0;
+				color: inherit;
 			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
+			.article-date {
+				font-size: 0.9em;
+				color: inherit;
+				margin: 0 0 0.25em 0;
 			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
+			.article-description {
+				font-size: 1em;
+				color: rgb(var(--gray-dark));
+				margin: 0;
+				line-height: 1.5;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
 			}
 		</style>
 	</head>
@@ -90,23 +113,33 @@ const posts = (await getCollection('blog')).sort(
 		<Header />
 		<main>
 			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
+				{
+					years.map((year) => (
+						<>
+							<h2 class="year">{year}</h2>
+							<ul class="articles-list">
+								{
+									postsByYear.get(year)!.map((post) => (
+										<li>
+											<a href={`/blog/${post.id}/`}>
+												<h3 class="article-title">{post.data.title}</h3>
+												<p class="article-date">
+													<FormattedDate date={post.data.pubDate} />
+												</p>
+												{post.descriptionHtml && (
+													<p
+														class="article-description"
+														set:html={post.descriptionHtml}
+													/>
+												)}
+											</a>
+										</li>
+									))
+								}
+							</ul>
+						</>
+					))
+				}
 			</section>
 		</main>
 		<Footer />
