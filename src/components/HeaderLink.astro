@@ -14,9 +14,10 @@ const subpath = pathnameNorm.match(/[^/]+/g);
 
 let isActive = href === pathnameNorm || href === '/' + (subpath?.[0] ?? '');
 if (isBlogSection && href === '/') {
-	// トップ (/) または /blog 配下 (記事ページ) のとき active。BASE_URL で先頭が消えても一致するよう両方チェック
+	// トップ (/) と /blog 配下 (記事ページ) のとき active
 	const isBlogPath =
 		pathnameNorm === '/' ||
+		pathnameNorm === '' ||
 		pathnameNorm.startsWith('/blog') ||
 		pathnameNorm === 'blog' ||
 		pathnameNorm.startsWith('blog/');
@@ -34,6 +35,6 @@ if (isBlogSection && href === '/') {
 	}
 	a.active {
 		font-weight: bolder;
-		text-decoration: underline;
+		text-decoration: none;
 	}
 </style>
