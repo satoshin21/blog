@@ -8,6 +8,7 @@ type Props = HTMLAttributes<'a'> & {
 
 const { href, class: className, isBlogSection = false, ...props } = Astro.props;
 const baseUrl = (import.meta.env.BASE_URL ?? '').replace(/\/$/, '');
+const fullHref = baseUrl + (href === '/' ? '' : href);
 const pathname = Astro.url.pathname.replace(baseUrl, '').replace(/\/+$/, '') || '/';
 const pathnameNorm = pathname === '' ? '/' : pathname;
 const subpath = pathnameNorm.match(/[^/]+/g);
@@ -25,7 +26,7 @@ if (isBlogSection && href === '/') {
 }
 ---
 
-<a href={href} class:list={[className, { active: isActive }]} {...props}>
+<a href={fullHref} class:list={[className, { active: isActive }]} {...props}>
 	<slot />
 </a>
 <style>

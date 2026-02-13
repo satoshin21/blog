@@ -12,7 +12,7 @@ export async function GET(context) {
 			title: post.data.title,
 			pubDate: post.data.pubDate,
 			description: SITE_DESCRIPTION,
-			link: `/blog/${post.id}/`,
+			link: `${context.base}blog/${post.id}/`,
 		})),
 	});
 }

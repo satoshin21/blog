@@ -45,6 +45,8 @@ for (const post of postsWithDescription) {
 	postsByYear.get(year)!.push(post);
 }
 const years = [...postsByYear.keys()].sort((a, b) => b - a);
+
+const baseUrl = (import.meta.env.BASE_URL ?? '').replace(/\/$/, '');
 ---
 
 <!doctype html>
@@ -121,7 +123,7 @@ const years = [...postsByYear.keys()].sort((a, b) => b - a);
 								{
 									postsByYear.get(year)!.map((post) => (
 										<li>
-											<a href={`/blog/${post.id}/`}>
+											<a href={`${baseUrl}/blog/${post.id}/`}>
 												<h3 class="article-title">{post.data.title}</h3>
 												<p class="article-date">
 													<FormattedDate date={post.data.pubDate} />
