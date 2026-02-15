@@ -18,9 +18,9 @@ const { title, description = SITE_DESCRIPTION, pubDate, updatedDate } = Astro.pr
 		<BaseHead title={title} description={description} />
 		<style>
 			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
+				width: 720px;
+				max-width: calc(100% - 4em);
+				margin: 0 auto;
 			}
 			.prose {
 				width: 720px;
@@ -28,6 +28,13 @@ const { title, description = SITE_DESCRIPTION, pubDate, updatedDate } = Astro.pr
 				margin: auto;
 				padding: 1em;
 				color: rgb(var(--gray-dark));
+			}
+			@media (max-width: 720px) {
+				.prose {
+					max-width: 100%;
+					margin: 0;
+					padding: 0;
+				}
 			}
 			.title {
 				margin-bottom: 1em;

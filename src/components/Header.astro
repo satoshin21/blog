@@ -2,8 +2,8 @@
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 
-// ブログ一覧（トップ）へのURL（base 対応）
-const blogListUrl = (import.meta.env.BASE_URL ?? '').replace(/\/$/, '') || '/';
+// サイト名クリック時は base に遷移（例: /blog/ → トップ）
+const blogListUrl = import.meta.env.BASE_URL || '/';
 ---
 
 <header>

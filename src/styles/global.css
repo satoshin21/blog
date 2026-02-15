@@ -130,7 +130,8 @@ hr {
 		font-size: 18px;
 	}
 	main {
-		padding: 2em;
+		max-width: calc(100% - 1.5em);
+		padding: 1em 0.75em;
 	}
 }
 

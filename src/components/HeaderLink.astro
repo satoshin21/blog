@@ -8,13 +8,15 @@ type Props = HTMLAttributes<'a'> & {
 
 const { href, class: className, isBlogSection = false, ...props } = Astro.props;
 const baseUrl = (import.meta.env.BASE_URL ?? '').replace(/\/$/, '');
-const fullHref = baseUrl + (href === '/' ? '' : href);
+const baseUrlWithSlash = baseUrl ? baseUrl + '/' : '';
+const hrefStr = href != null ? String(href) : '';
+const fullHref = baseUrlWithSlash + (hrefStr === '/' ? '' : hrefStr.replace(/^\//, ''));
 const pathname = Astro.url.pathname.replace(baseUrl, '').replace(/\/+$/, '') || '/';
 const pathnameNorm = pathname === '' ? '/' : pathname;
 const subpath = pathnameNorm.match(/[^/]+/g);
 
-let isActive = href === pathnameNorm || href === '/' + (subpath?.[0] ?? '');
-if (isBlogSection && href === '/') {
+let isActive = hrefStr === pathnameNorm || hrefStr === '/' + (subpath?.[0] ?? '');
+if (isBlogSection && hrefStr === '/') {
 	// トップ (/) と /blog 配下 (記事ページ) のとき active
 	const isBlogPath =
 		pathnameNorm === '/' ||
