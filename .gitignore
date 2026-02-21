@@ -1,5 +1,8 @@
 # build output
 dist/
+
+# remark-link-card-plus のOGP画像キャッシュ
+public/remark-link-card-plus/
 # generated types
 .astro/
 
