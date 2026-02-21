@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 import remarkLinkCard from 'remark-link-card-plus';
+import rehypeFigureCaption from './src/plugins/rehype-figure-caption.js';
 
 // https://astro.build/config
 // GitHub Pages プロジェクトサイト (satoshin21.github.io/blog) 用
@@ -23,5 +24,6 @@ export default defineConfig({
 				},
 			],
 		],
+		rehypePlugins: [rehypeFigureCaption],
 	},
 });
