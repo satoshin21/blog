@@ -52,16 +52,16 @@ h1 {
 	font-size: 2.54em;
 }
 h2 {
-	font-size: 2.0em;
+	font-size: 1.8em;
 }
 h3 {
-	font-size: 1.753em;
+	font-size: 1.5em;
 }
 h4 {
-	font-size: 1.563em;
+	font-size: 1.3em;
 }
 h5 {
-	font-size: 1.25em;
+	font-size: 1.1em;
 }
 strong,
 b {
@@ -94,21 +94,75 @@ input {
 }
 table {
 	width: 100%;
+	border-collapse: collapse;
+}
+.prose table {
+	width: 100%;
+	margin: 1em 0;
+	border-radius: 8px;
+	overflow: hidden;
+	font-size: 0.95em;
+}
+.prose table th,
+.prose table td {
+	border: 1px solid rgb(var(--gray-light));
+	padding: 0.75em 1em;
+	text-align: left;
+	vertical-align: middle;
+}
+.prose table thead th {
+	background-color: rgb(var(--gray-light));
+	font-weight: 600;
+	color: rgb(var(--gray-dark));
+	border-bottom: 2px solid rgb(var(--gray));
+}
+.prose table tbody tr:nth-child(even) {
+	background-color: rgba(var(--gray-light), 0.3);
+}
+.prose table tbody tr:hover {
+	background-color: rgba(var(--gray-light), 0.5);
+}
+.prose table td[rowspan] {
+	text-align: center;
+	vertical-align: middle;
+	background-color: rgba(var(--gray-light), 0.4);
+}
+.prose table td span {
+	font-size: 0.85em;
+	color: rgb(var(--gray));
 }
 img {
 	max-width: 100%;
 	height: auto;
 	border-radius: 8px;
 }
+
+/* 画像 + キャプション（Markdown の ![キャプション](url) が figure に変換されたもの） */
+.prose figure.figure-with-caption {
+	margin: 1.5em 0;
+}
+.prose figure.figure-with-caption img {
+	display: block;
+	margin-bottom: 0.5em;
+}
+.prose .figure-caption {
+	font-size: 0.7em;
+	color: rgb(var(--gray));
+	text-align: center;
+}
+
 code {
 	font-family: "Source Code Pro", ui-monospace, monospace;
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
+	font-size: 0.8em;
+	padding: 1px 5px;
+	background-color: rgb(var(--gray));
+	color: rgb(var(--gray-light));
 	border-radius: 2px;
 }
 pre {
 	font-family: "Source Code Pro", ui-monospace, monospace;
 	padding: 1.5em;
+	font-size: 0.8em;
 	border-radius: 8px;
 }
 pre > code {
