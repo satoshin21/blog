@@ -128,8 +128,7 @@ multiagent-squad
 
 Zellij のいいところのひとつが事前に作った KDL ファイルを読み込んで一発でレイアウトをセットアップできることです。後で pane を追加したくなったときもレイアウトの変更が簡単にできます。
 
-https://github.com/satoshin21/multiagent-squad/blob/main/internal/embed/squad.kdl
-<p>
+<script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fsatoshin21%2Fmultiagent-squad%2Fblob%2Fmain%2Finternal%2Fembed%2Fsquad.kdl&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
 
 
 ## 運用方針と人間の役割
