@@ -1,7 +1,19 @@
 {
-  "name": "",
-  "type": "module",
+  "name": "blog",
   "version": "0.0.1",
+  "description": "```sh npm create astro@latest -- --template blog ```",
+  "homepage": "https://github.com/satoshin21/blog#readme",
+  "bugs": {
+    "url": "https://github.com/satoshin21/blog/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/satoshin21/blog.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -16,5 +28,6 @@
     "marked": "^17.0.2",
     "remark-link-card-plus": "^0.7.3",
     "sharp": "^0.34.3"
-  }
+  },
+  "devDependencies": {}
 }
